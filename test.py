@@ -7,11 +7,15 @@ from PIL import Image
 from tensorflow.examples.tutorials.mnist import input_data
 import random
 
-
+data = input_data.read_data_sets('data/MNIST/', one_hot=True)
+X = data.train.images
 
 def convert_image_to_array():
     img = Image.open('grey.png')
-    image_array = np.asarray(img)
+    image_array = np.asarray(img).astype(np.float32)
+    _xx = X[5, :]
+    print(_xx.dtype)
+    print(image_array.dtype)
     return image_array
 
 print(convert_image_to_array())
