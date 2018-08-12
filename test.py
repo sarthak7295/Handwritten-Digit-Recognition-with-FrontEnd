@@ -8,6 +8,14 @@ from tensorflow.examples.tutorials.mnist import input_data
 import random
 
 
+
+def convert_image_to_array():
+    img = Image.open('grey.png')
+    image_array = np.asarray(img)
+    return image_array
+
+print(convert_image_to_array())
+
 def show_n_random_images(n, images):
     for counter in range(n):
         row_no = random.randint(1,500)
@@ -25,14 +33,14 @@ def show_image(n, images):
     img = Image.fromarray(b)
     img.show(title=row_no)
 
-# show_n_random_images(3, X)
-data = input_data.read_data_sets('data/MNIST/', one_hot=True)
-print("Size of:")
-print("- Training-set:\t\t{}".format(len(data.train.labels)))
-print("- Test-set:\t\t{}".format(len(data.test.labels)))
-print("- Validation-set:\t{}".format(len(data.validation.labels)))
-# print(data.train.images)
-X = data.train.images
-show_image(5000,X)
+# # show_n_random_images(3, X)
+# data = input_data.read_data_sets('data/MNIST/', one_hot=True)
+# print("Size of:")
+# print("- Training-set:\t\t{}".format(len(data.train.labels)))
+# print("- Test-set:\t\t{}".format(len(data.test.labels)))
+# print("- Validation-set:\t{}".format(len(data.validation.labels)))
+# # print(data.train.images)
+# X = data.train.images
+# show_image(5000,X)
 
 

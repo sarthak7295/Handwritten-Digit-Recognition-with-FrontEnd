@@ -1,24 +1,70 @@
 
 from PIL import Image
+from mnist import model
 import base64
 from flask import Flask, request, render_template,redirect, url_for
 import PIL.ImageOps
 import PIL.ImageEnhance
+import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data
+import numpy as np
+import os
 
-
+data = input_data.read_data_sets('data/MNIST/', one_hot=True)
+X = data.train.images
+Yt = data.train.labels
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
 
 app = Flask(__name__)
 # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+def convert_image_to_array():
+    img = Image.open('grey.png')
+    image_array = np.asarray(img)
+    return image_array
+
 
 @app.route('/')
 def hello_world():
     return render_template('upload.html')
 
 
-@app.route('/helloheading')
+@app.route('/perceptron')
 def index():
+    _xx = X[5,:]
+    ab = Yt[5,:]
+    yy, variables = model.perceptron(_xx.reshape(1, 784))
+    init = tf.global_variables_initializer()
+    saver = tf.train.Saver()
+    sess = tf.Session()
+    sess.run(init)
+    saver.restore(sess, "data\\simple_NN_mnist\\MNIST_Perceptron")
+    a = sess.run(yy)
+    print(a)
+    print(ab)
+    sess.close()
     return render_template('hello.html', name='sarthak')
+
+
+@app.route('/convoluted')
+def convol():
+    _xx = X[5,:]
+    ab = Yt[5,:]
+    yy, variables,y = model.convoluted_nn(_xx.reshape(1, 784))
+    init = tf.global_variables_initializer()
+    saver = tf.train.Saver()
+    sess = tf.Session()
+    sess.run(init)
+    saver.restore(sess, "data\\conv_NN_mnist\\MNIST_conv")
+    a = sess.run(yy)
+    print(a)
+    a = sess.run(y)
+    print(a)
+    print(ab)
+    return render_template('hello.html', name='sarthak')
+
 
 
 @app.route('/save', methods=['GET', 'POST'])
@@ -42,6 +88,11 @@ def covert_image_greyscale():
     img = converter2.enhance(50)
     img.save('grey.png')
 
+
+def convert_image_to_array():
+    img = Image.open('grey.png')
+    image_array = np.asarray(img)
+    return image_array
 
 if __name__ == '__main__':
     app.run(debug='true',host='0.0.0.0' ,port=8080)

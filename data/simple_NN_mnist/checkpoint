@@ -1,0 +1,2 @@
+model_checkpoint_path: "D:\\PycharmProjects\\TensorFlow_Models\\MNIST_Perceptron"
+all_model_checkpoint_paths: "D:\\PycharmProjects\\TensorFlow_Models\\MNIST_Perceptron"

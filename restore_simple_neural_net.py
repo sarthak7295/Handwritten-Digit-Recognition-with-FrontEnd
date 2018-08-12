@@ -1,10 +1,7 @@
-import tensorflow as tf
 import numpy as np
-import pandas as pd
-from tensorflow.examples.tutorials.mnist import input_data
+import tensorflow as tf
 from PIL import Image
-
-
+from tensorflow.examples.tutorials.mnist import input_data
 
 data = input_data.read_data_sets('data/MNIST/', one_hot=True)
 print("Size of:")
@@ -15,9 +12,9 @@ X = data.train.images
 Y = data.train.labels
 
 # defining the imp parameters
-n_dim = X.shape[1]
+n_dim = 28*28
 n_classes = 10       #no of classes Mine and Rock so 2
-model_path = "D:\\PycharmProjects\\TensorFlow_Models\\MNIST_Perceptron"
+model_path = "D:\\PycharmProjects\\TensorFlow_Models\\covoluted_nmist\\MNIST_Perceptron"
 
 # defining the hidden layer and ip and op layer
 n_hidden_1 = 120
@@ -91,3 +88,8 @@ saver.restore(sess,model_path)
 show_image(5, X)
 prediction_run = sess.run(y, feed_dict={x: X[5].reshape(1, 784)})
 print(prediction_run)
+
+def predict_simple_nn(X):
+    prediction_run = sess.run(y, feed_dict={x: X[5].reshape(1, 784)})
+    return prediction_run
+
