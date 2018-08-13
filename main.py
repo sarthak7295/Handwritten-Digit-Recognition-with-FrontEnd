@@ -10,9 +10,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 import json
 
-# data = input_data.read_data_sets('data/MNIST/', one_hot=True)
-# X = data.train.images
-# Yt = data.train.labels
+
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
@@ -42,35 +40,35 @@ def covert_image_greyscale():
 def hello_world():
     return render_template('upload.html')
 
-
-@app.route('/perceptron')
-def perceptron():
-    _xx = convert_image_to_array()
-    yy, variables = model.perceptron(_xx1.reshape(1, 784))
-    init = tf.global_variables_initializer()
-    saver = tf.train.Saver()
-    sess = tf.Session()
-    sess.run(init)
-    saver.restore(sess, "data\\simple_NN_mnist\\MNIST_Perceptron")
-    a = sess.run(yy)
-    a = np.argmax(a, axis=1)
-    sess.close()
-    print(a)
-    return a
+#
+# @app.route('/perceptron')
+# def perceptron():
+#     _xx = convert_image_to_array()
+#     yy, variables = model.perceptron(_xx1.reshape(1, 784))
+#     init = tf.global_variables_initializer()
+#     saver = tf.train.Saver()
+#     sess = tf.Session()
+#     sess.run(init)
+#     saver.restore(sess, "data\\simple_NN_mnist\\MNIST_Perceptron")
+#     a = sess.run(yy)
+#     a = np.argmax(a, axis=1)
+#     sess.close()
+#     print(a)
+#     return a
 
 
 @app.route('/convoluted')
 def convol():
-    _xx = convert_image_to_array()
-    yy, variables,y = model.convoluted_nn(_xx.reshape(1, 784))
+    x = tf.placeholder("float", [None, 784])
+    yy, variables, y = model.convoluted_nn(x)
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
     sess = tf.Session()
     sess.run(init)
     saver.restore(sess, "data\\conv_NN_mnist\\MNIST_conv")
-    a = sess.run(yy)
+    _xx = convert_image_to_array()
+    a = sess.run(yy, feed_dict={x: _xx.reshape(1,784)})
     a = np.argmax(a, axis=1)
-    sess.close()
     print(a)
     return a
 
