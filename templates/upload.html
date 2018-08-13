@@ -1,6 +1,6 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript">
     var canvas, ctx, flag = false,
         prevX = 0,
         currX = 0,
@@ -72,6 +72,8 @@
     }
 
     function erase() {
+        document.getElementById("demo").innerHTML =
+      " ";
         var m = confirm("Want to clear");
         if (m) {
             ctx.clearRect(0, 0, w, h);
@@ -86,7 +88,8 @@
 
 
 	function UploadPic() {
-
+    document.getElementById("demo").innerHTML =
+      " ";
     // Generate the image data
     var Pic = canvas.toDataURL("image/png");
     Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "")
@@ -102,7 +105,23 @@
             alert("Done, Picture Uploaded.");
         }
     });
+
+
 }
+
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML =
+      this.responseText;
+    }
+  };
+  xhttp.open("GET", "/calculate", true);
+  xhttp.send();
+}
+
 
     function findxy(res, e) {
         if (res == 'down') {
@@ -135,18 +154,28 @@
         }
     }
     </script>
-	<body onload="init()">
-        <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
-        <div style="position:absolute;top:12%;left:43%;">Choose Color</div>
-        <div style="position:absolute;top:15%;left:45%;width:10px;height:10px;background:green;" id="green" onclick="color(this)"></div>
-        <div style="position:absolute;top:15%;left:46%;width:10px;height:10px;background:blue;" id="blue" onclick="color(this)"></div>
-        <div style="position:absolute;top:15%;left:47%;width:10px;height:10px;background:red;" id="red" onclick="color(this)"></div>
-        <div style="position:absolute;top:17%;left:45%;width:10px;height:10px;background:yellow;" id="yellow" onclick="color(this)"></div>
-        <div style="position:absolute;top:17%;left:46%;width:10px;height:10px;background:orange;" id="orange" onclick="color(this)"></div>
-        <div style="position:absolute;top:17%;left:47%;width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
-        <div style="position:absolute;top:20%;left:43%;">Eraser</div>
-        <div style="position:absolute;top:22%;left:45%;width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
-        <input type="button" value="upload" id="btn" size="30" onclick="UploadPic()" style="position:absolute;top:55%;left:10%;">
-        <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:55%;left:15%;">
-    </body>
-    </html>
+<body onload="init()">
+<canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
+<div style="position:absolute;top:12%;left:43%;">Choose Color</div>
+<div style="position:absolute;top:15%;left:45%;width:10px;height:10px;background:green;" id="green" onclick="color(this)"></div>
+<div style="position:absolute;top:15%;left:46%;width:10px;height:10px;background:blue;" id="blue" onclick="color(this)"></div>
+<div style="position:absolute;top:15%;left:47%;width:10px;height:10px;background:red;" id="red" onclick="color(this)"></div>
+<div style="position:absolute;top:17%;left:45%;width:10px;height:10px;background:yellow;" id="yellow" onclick="color(this)"></div>
+<div style="position:absolute;top:17%;left:46%;width:10px;height:10px;background:orange;" id="orange" onclick="color(this)"></div>
+<div style="position:absolute;top:17%;left:47%;width:10px;height:10px;background:black;" id="black" onclick="color(this)"></div>
+<div style="position:absolute;top:20%;left:43%;">Eraser</div>
+<div style="position:absolute;top:22%;left:45%;width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+<input type="button" value="upload" id="btn" size="30" onclick="UploadPic()" style="position:absolute;top:55%;left:10%;">
+<input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:55%;left:15%;">
+<input type="button" value="calc" id="calc" size="23" onclick="loadDoc()" style="position:absolute;top:55%;left:25%;">
+
+
+<!--<right><h1>Hello convoluted {{ digit }}!</h1></right>-->
+<!--<h1>Hello perceptron {{ a }}!</h1>-->
+<div id="demo">
+    <h1>The XMLHttpRequest Object</h1>
+</div>
+
+
+</body>
+</html>

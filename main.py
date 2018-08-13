@@ -2,17 +2,17 @@
 from PIL import Image
 from mnist import model
 import base64
-from flask import Flask, request, render_template,redirect, url_for
+from flask import Flask, request, render_template,jsonify, url_for
 import PIL.ImageOps
 import PIL.ImageEnhance
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
+import json
 
-
-data = input_data.read_data_sets('data/MNIST/', one_hot=True)
-X = data.train.images
-Yt = data.train.labels
+# data = input_data.read_data_sets('data/MNIST/', one_hot=True)
+# X = data.train.images
+# Yt = data.train.labels
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
@@ -25,8 +25,6 @@ def convert_image_to_array():
     image_array = np.asarray(img).astype(np.float32)
     # print(image_array)
     return image_array
-
-
 
 
 def covert_image_greyscale():
@@ -48,7 +46,7 @@ def hello_world():
 @app.route('/perceptron')
 def perceptron():
     _xx = convert_image_to_array()
-    yy, variables = model.perceptron(_xx.reshape(1, 784))
+    yy, variables = model.perceptron(_xx1.reshape(1, 784))
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
     sess = tf.Session()
@@ -58,7 +56,7 @@ def perceptron():
     a = np.argmax(a, axis=1)
     sess.close()
     print(a)
-    return render_template('hello.html', name='sarthak')
+    return a
 
 
 @app.route('/convoluted')
@@ -74,7 +72,7 @@ def convol():
     a = np.argmax(a, axis=1)
     sess.close()
     print(a)
-    return render_template('hello.html', name='sarthak')
+    return a
 
 
 
@@ -86,7 +84,17 @@ def save_image():
     f.write(image_64_decode)
     f.close()
     covert_image_greyscale()
-    return render_template('upload.html')
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+
+@app.route('/calculate', methods=['GET', 'POST'])
+def calculate():
+    data = convol()
+    data = str(np.asscalar(np.int16(data[0])))
+    res = {
+        'answer' : data
+    }
+    return jsonify(res)
 
 
 
