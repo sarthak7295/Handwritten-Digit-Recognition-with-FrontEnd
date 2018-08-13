@@ -8,7 +8,7 @@ How to start:
 
 ![Alt text](/static/Capture1.PNG?raw=true "Title")
 
-2). draw your digit upload it and then click on calc.
+2). draw your digit upload it and then click on calc.  (PS: draw the digit utilizing full space otherwise it wont work properly)
 
 ![Alt text](/static/Capture2.PNG?raw=true "Title")
 
